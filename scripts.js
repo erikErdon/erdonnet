@@ -232,4 +232,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Periodically update unread count every 5 seconds
     }
 
+    function setVhProperty() {
+        // Get the viewport height and convert it to a custom property value
+        let vh = window.innerHeight * 0.01;
+        // Log the value for debugging purposes
+        console.log(`Setting --vh to ${vh}px`);
+        // Set the value in the :root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+    
+      // Execute on initial load
+      setVhProperty();
+    
+      // Execute on resize
+      window.addEventListener('resize', setVhProperty);
 });
+
+
+

@@ -11,14 +11,11 @@
   --secondary-color: #0056b3;
   --background-color: #ffffff;
   --card-background: #f8f9fa;
-  --card-background-light: #e9ecef; /* New light card background */
   --text-color: #343a40;
-  --text-color-light: #6c757d; /* New light text color */
   --error-color: #dc3545;
   --link-color: #007bff;
   --link-hover-color: #0056b3;
   --border-color: #dee2e6;
-  --border-color-light: #ced4da; /* New light border color */
   --vh: 100%;
 }
 
@@ -28,30 +25,22 @@
   --secondary-color: #3385ff;
   --background-color: #343a40;
   --card-background: #3e444a;
-  --card-background-dark: #2b2e33; /* New dark card background */
   --text-color: #f8f9fa;
-  --text-color-dark: #adb5bd; /* New dark text color */
   --error-color: #ff6b6b;
   --link-color: #66b2ff;
   --link-hover-color: #3385ff;
   --border-color: #495057;
-  --border-color-dark: #6c757d; /* New dark border color */
 }
 
 /* Base Styles */
-
-body,
-html {
-  height: 100%;
-}
-
 body {
   font-family: "Roboto", sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
   flex-direction: column;
-  height: var(--vh); /* Ensure this is used instead of height: 100vh */
+  height: 100vh; /* Fallback for browsers that do not support custom properties */
+  height: calc(var(--vh, 1vh) * 100);
   margin: 0;
 }
 
@@ -140,7 +129,6 @@ a:hover {
   display: block;
   border-radius: 4px;
   transition: background-color 0.1s ease;
-  position: relative; /* Added to position the badge */
 }
 
 .side-nav ul li a:hover {
@@ -318,9 +306,7 @@ input[type="submit"]:hover {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: calc(
-    var(--vh, 1vh) * 100 - 120px
-  ); /* Adjust height based on viewport */
+  height: calc(100vh - 120px);
   background: var(--card-background);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -383,7 +369,6 @@ input[type="submit"]:hover {
   padding: 10px;
   border-top: 1px solid var(--border-color);
   background: var(--card-background);
-  border-radius: 0 0 8px 8px;
 }
 
 #message-input {
@@ -482,6 +467,7 @@ ul li {
 
 /* Style for read received messages */
 .user-message.received.read {
+  background-color: var(--card-background);
   font-weight: normal;
   border: 1px solid var(--border-color); /* Standard border for read messages */
 }
@@ -495,17 +481,13 @@ ul li {
 }
 
 /* Style for the unread count badge next to Messages */
-.messages-link {
+.side-nav .messages-link {
+  position: relative;
   display: flex;
   align-items: center;
 }
 
-.messages-link a {
-  flex: 1; /* Ensures the link takes up all available space */
-  padding-right: 30px; /* Adds space for the unread count badge */
-}
-
-.messages-link .unread-count {
+.side-nav .messages-link .unread-count {
   background-color: red;
   color: white;
   padding: 0.2em 0.5em;
@@ -515,7 +497,6 @@ ul li {
   min-width: 20px;
   text-align: center;
   position: absolute;
-  border: 4px solid var(--card-background);
-  right: 10px; /* Positioning the badge inside the link */
-  transform: translateY(-50%); /* Center badge vertically */
+  top: 0;
+  right: 0;
 }

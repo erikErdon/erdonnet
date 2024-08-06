@@ -13,6 +13,10 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+$current_user_id = $_SESSION['user_id'];
+
+// Fetch the total count of unread messages for the current user
+$unread_count = getUnreadCount($conn, $current_user_id);
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +49,12 @@ if (!isset($_SESSION['username'])) {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="#">Settings</a></li>
-                <li><a href="messages.php">Messages</a></li>
+                <li class="messages-link">
+                    <a href="messages.php">Messages</a>
+                    <?php if ($unread_count > 0): ?>
+                        <span class="unread-count"><?= $unread_count ?></span>
+                    <?php endif; ?>
+                </li>
                 <li><a href="logout.php">Logout</a></li>
                 <button id="theme-toggle">Toggle Theme</button>
             </ul>

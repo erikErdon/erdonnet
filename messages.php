@@ -1,9 +1,9 @@
 <?php
-session_start(); // Start the session
-include './functions.php'; // Include the functions file for messaging
-include './db.php'; // Include the database connection file
+session_start();
+include './functions.php';
+include './db.php';
 
-// Check if user is logged in, redirect to login page if not
+// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
@@ -16,13 +16,7 @@ $current_user_id = $_SESSION['user_id'];
 $users = getUsersWithMessages($conn, $current_user_id);
 
 // Fetch the total count of unread messages for the current user
-$stmt = $conn->prepare("SELECT COUNT(*) AS unread_count FROM messages WHERE receiver_id = ? AND is_read = 0");
-$stmt->bind_param("i", $current_user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$unread_data = $result->fetch_assoc();
-$unread_count = $unread_data['unread_count'];
-$stmt->close();
+$unread_count = getUnreadCount($conn, $current_user_id);
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +33,6 @@ $stmt->close();
     <header class="header">
         <button class="hamburger-menu" id="hamburger-menu">&#9776;</button>
         <h1>Messages</h1>
-        <!-- Search Bar in Header -->
         <div class="search-container">
             <input type="text" id="search-bar" class="search-bar" placeholder="Search users...">
             <button id="search-icon" class="search-icon"><i class="fas fa-search"></i></button>
@@ -53,7 +46,7 @@ $stmt->close();
         <nav class="side-nav" id="side-nav">
             <ul>
                 <li><a href="index.php">Home</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="profile.php">Profile</a></li>
                 <li><a href="#">Settings</a></li>
                 <li class="messages-link">
                     <a href="messages.php">Messages</a>
